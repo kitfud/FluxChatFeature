@@ -4,6 +4,7 @@ import About from './AboutComponent.js';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Chat from './ChatComponent';
+import MapExample from './MapComponent'
 
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -50,6 +51,7 @@ componentDidMount(){
 <Switch>
 <Route path='/home' component={() =><Home slides={this.props.slides} />} />
 <Route path='/about' component={About} />
+<Route path='/map' component= {MapExample} />
 <Route path='/chat' component={()=><Chat user={this.props.auth.user ? this.props.auth.user.displayName : "Login to submit a comment! "} authenticate={this.props.auth}
 postComment = {this.props.postComment}
 comments = {this.props.comments}
