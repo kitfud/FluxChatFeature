@@ -3,42 +3,59 @@ import Home from './HomeComponent.js';
 import About from './AboutComponent.js';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Chat from './ChatComponent';
+
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchSlides } from '../redux/ActionCreators';
+import { fetchSlides, googleLogin,logoutUser, deleteComment,postComment,fetchComments } from '../redux/ActionCreators';
 
 const mapDispatchToProps = dispatch => ({
-    fetchSlides: ()=>dispatch(fetchSlides())
+    fetchSlides: ()=>dispatch(fetchSlides()),
+
+    googleLogin: () => dispatch(googleLogin()),
+    logoutUser: () => dispatch(logoutUser()),
+
+    postComment: (author, comment) => dispatch(postComment(author, comment)),
+    fetchComments: () => dispatch(fetchComments()),
+    deleteComment: (commentId)=>dispatch(deleteComment(commentId)),
+
 })
 
 const mapStateToProps = state =>{
     return{
-        slides: state.slides
+        slides: state.slides,
+        auth: state.auth,
+        comments: state.comments.comments
     }
 }
 
 
 class Main extends Component {
 
-    constructor(props) {
-        super(props);
-    
-      }
-
- 
 componentDidMount(){
     this.props.fetchSlides();
+    this.props.fetchComments();
 }
 
     render(){
         return(
 <React.Fragment>
-<Header/>
+<Header googleLogin ={this.props.googleLogin}
+  auth={this.props.auth} 
+  
+  logoutUser={this.props.logoutUser}
+/>
 
 <Switch>
-<Route path='/home' component={() =><Home slides={this.props.slides}/>} />
+<Route path='/home' component={() =><Home slides={this.props.slides} />} />
 <Route path='/about' component={About} />
+<Route path='/chat' component={()=><Chat user={this.props.auth.user ? this.props.auth.user.displayName : "Login to submit a comment! "} authenticate={this.props.auth}
+postComment = {this.props.postComment}
+comments = {this.props.comments}
+deleteComment ={this.props.deleteComment}
+/>}/>
+
 <Redirect to="/home" />
 </Switch>
 

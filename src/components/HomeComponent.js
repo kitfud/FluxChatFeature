@@ -26,8 +26,9 @@ function Slides ({slides, isLoading, errMess}){
 
 
     if(slides !=null){
+
         const slideStory = slides.map((slide)=>
-        <div key={slide.id}>{slide.name}</div> )
+        <div key={slide.id}>{slide.description}</div> )
         return(
             slideStory
             )

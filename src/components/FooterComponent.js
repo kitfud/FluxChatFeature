@@ -12,11 +12,13 @@ render(){
                         <h5>Links</h5>
                         <ul className = "list-unstyled">
                         <li><Link to="/home">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/chat">Chat</Link></li>
                         </ul>
                     </div>
                     <div className = "col-7 col-sm-5">
                         <h5>Project details:</h5>
-                        <span>(include details)</span>
+                        <span>Development work on creating a new type of chat feature</span>
                     </div>
 
                 </div>
