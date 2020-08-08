@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Card, Button, Modal, ModalHeader, ModalBody, Label, Row, Col } from 'reactstrap';
+import {CardHeader, Card, Button, Modal, ModalHeader, ModalBody, Label, Row, Col, CardBody } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 
@@ -7,14 +7,29 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-function RenderComments({comments,deleteComment}){  
+function RenderComments({comments,deleteComment, upComment,downComment}){  
   
     if(comments != null){
      const rencomment = comments.map((info) => 
      <Card style = {cardStyle}  key={info._id}>
-    
-     <ol>
+    <CardBody>
+        <div className="container">
+<div className="row">
+    <div className="col-4">
+        <CardHeader>
+        Up: {info.thumbsUp}
+        <span style={buttonStyle} onClick={()=>{upComment(info)}} className="fa fa-thumbs-up"></span>
+        </CardHeader>
+    <CardHeader>
+    Down:{info.thumbsDown}
+    <span style={buttonStyle} onClick={()=>{downComment(info)}} className="fa fa-thumbs-down"></span>
+    </CardHeader>
+   
+    </div>
+    <div className="col-7">
+    <ol>
      <p style = {textStyle}>{info.comment}</p>
+  
      <p>-- {info.author.firstname}<span> </span>
      {new Intl.DateTimeFormat('en-US', 
      { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(info.updatedAt.toDate())))}
@@ -25,7 +40,15 @@ function RenderComments({comments,deleteComment}){
 
      </p>
      </ol> 
+    </div>
+
+
      
+</div>
+        </div>
+ 
+    </CardBody>
+
      </Card>
    
 );
@@ -144,7 +167,7 @@ render(){
 
 <div className = "col-6">
 <div>Comments:</div>
-<RenderComments comments = {this.props.comments} deleteComment = {this.props.deleteComment} auth={this.props.auth}/>
+<RenderComments comments = {this.props.comments} deleteComment = {this.props.deleteComment} auth={this.props.auth} upComment = {this.props.upComment} downComment={this.props.downComment}/>
 
 </div>
 

@@ -233,3 +233,40 @@ export const postComment = (comment,author) => (dispatch) => {
         .catch(error => dispatch(commentsFailed(error.message)));
       };
 
+      export const upComment = (comment)=>(dispatch)=>{
+     
+    
+        return firestore.collection('comments').get()
+        .then(snapshot => {
+            //console.log(comment.author.firstname);
+        
+                firestore.collection('comments').doc(comment._id).update({
+                    thumbsUp:firebasestore.FieldValue.increment(1)
+                })
+                
+                .then(() => {
+                    dispatch(fetchComments());
+                })       
+            
+        })
+        .catch(error => dispatch(commentsFailed(error.message)));
+      }
+
+      export const downComment = (comment)=>(dispatch)=>{
+     
+    
+        return firestore.collection('comments').get()
+        .then(snapshot => {
+            //console.log(comment.author.firstname);
+        
+                firestore.collection('comments').doc(comment._id).update({
+                    thumbsDown:firebasestore.FieldValue.increment(1)
+                })
+                
+                .then(() => {
+                    dispatch(fetchComments());
+                })       
+            
+        })
+        .catch(error => dispatch(commentsFailed(error.message)));
+      }

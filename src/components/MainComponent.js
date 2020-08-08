@@ -9,7 +9,7 @@ import MapExample from './MapComponent'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { fetchSlides, googleLogin,logoutUser, deleteComment,postComment,fetchComments } from '../redux/ActionCreators';
+import { upComment,downComment,fetchSlides, googleLogin,logoutUser, deleteComment,postComment,fetchComments } from '../redux/ActionCreators';
 
 const mapDispatchToProps = dispatch => ({
     fetchSlides: ()=>dispatch(fetchSlides()),
@@ -20,6 +20,8 @@ const mapDispatchToProps = dispatch => ({
     postComment: (author, comment) => dispatch(postComment(author, comment)),
     fetchComments: () => dispatch(fetchComments()),
     deleteComment: (commentId)=>dispatch(deleteComment(commentId)),
+    upComment:(commentId)=>dispatch(upComment(commentId)),
+    downComment:(commentId)=>dispatch(downComment(commentId))
 
 })
 
@@ -56,6 +58,8 @@ componentDidMount(){
 postComment = {this.props.postComment}
 comments = {this.props.comments}
 deleteComment ={this.props.deleteComment}
+upComment = {this.props.upComment}
+downComment = {this.props.downComment}
 />}/>
 
 <Redirect to="/home" />
