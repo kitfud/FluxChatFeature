@@ -9,7 +9,7 @@ import MapExample from './MapComponent'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { upComment,downComment,fetchSlides, googleLogin,logoutUser, deleteComment,postComment,fetchComments } from '../redux/ActionCreators';
+import { toggleTimer,upComment,downComment,fetchSlides, googleLogin,logoutUser, deleteComment,postComment,fetchComments } from '../redux/ActionCreators';
 
 const mapDispatchToProps = dispatch => ({
     fetchSlides: ()=>dispatch(fetchSlides()),
@@ -21,7 +21,8 @@ const mapDispatchToProps = dispatch => ({
     fetchComments: () => dispatch(fetchComments()),
     deleteComment: (commentId)=>dispatch(deleteComment(commentId)),
     upComment:(commentId)=>dispatch(upComment(commentId)),
-    downComment:(commentId)=>dispatch(downComment(commentId))
+    downComment:(commentId)=>dispatch(downComment(commentId)),
+    toggleTimer:(commentId)=>dispatch(toggleTimer(commentId))
 
 })
 
@@ -60,6 +61,7 @@ comments = {this.props.comments}
 deleteComment ={this.props.deleteComment}
 upComment = {this.props.upComment}
 downComment = {this.props.downComment}
+toggleTimer = {this.props.toggleTimer}
 />}/>
 
 <Redirect to="/home" />

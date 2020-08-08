@@ -190,6 +190,7 @@ export const postComment = (comment,author) => (dispatch) => {
               'firstname' : author
           },
           comment: comment,
+          startTimer:true,
           createdAt: firebasestore.FieldValue.serverTimestamp(),
           updatedAt: firebasestore.FieldValue.serverTimestamp()
       })
@@ -261,6 +262,24 @@ export const postComment = (comment,author) => (dispatch) => {
         
                 firestore.collection('comments').doc(comment._id).update({
                     thumbsDown:firebasestore.FieldValue.increment(1)
+                })
+                
+                .then(() => {
+                    dispatch(fetchComments());
+                })       
+            
+        })
+        .catch(error => dispatch(commentsFailed(error.message)));
+      }
+
+      export const toggleTimer = (comment)=>(dispatch)=>{
+
+        return firestore.collection('comments').get()
+        .then(snapshot => {
+            //console.log(comment.author.firstname);
+        
+                firestore.collection('comments').doc(comment._id).update({
+                    startTimer: false
                 })
                 
                 .then(() => {

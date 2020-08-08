@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import {CardHeader, Card, Button, Modal, ModalHeader, ModalBody, Label, Row, Col, CardBody } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
-
+import Timer from './TimerComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-function RenderComments({comments,deleteComment, upComment,downComment}){  
+function RenderComments({comments,deleteComment, upComment,downComment,toggleTimer}){  
   
     if(comments != null){
      const rencomment = comments.map((info) => 
@@ -18,11 +18,13 @@ function RenderComments({comments,deleteComment, upComment,downComment}){
     <div className="col-4">
         <CardHeader>
         Up: {info.thumbsUp}
-        <span style={buttonStyle} onClick={()=>{upComment(info)}} className="fa fa-thumbs-up"></span>
+        {info.startTimer? <span style={buttonStyle} onClick={()=>{upComment(info)}} className="fa fa-thumbs-up"></span>: null}
+        
         </CardHeader>
     <CardHeader>
     Down:{info.thumbsDown}
-    <span style={buttonStyle} onClick={()=>{downComment(info)}} className="fa fa-thumbs-down"></span>
+    {info.startTimer?  <span style={buttonStyle} onClick={()=>{downComment(info)}} className="fa fa-thumbs-down"></span>: null}
+   
     </CardHeader>
    
     </div>
@@ -31,10 +33,12 @@ function RenderComments({comments,deleteComment, upComment,downComment}){
      <p style = {textStyle}>{info.comment}</p>
   
      <p>-- {info.author.firstname}<span> </span>
+     
      {new Intl.DateTimeFormat('en-US', 
      { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(info.updatedAt.toDate())))}
       
-    
+   {info.startTimer ? <Timer toggleTimer = {toggleTimer} id={info}/>: null} 
+
       <span style={buttonStyle} className="fa fa-trash-o" onClick={() =>{if(window.confirm('are you sure you want to delete this comment?')) deleteComment(info) }}></span>
      
 
@@ -167,7 +171,7 @@ render(){
 
 <div className = "col-6">
 <div>Comments:</div>
-<RenderComments comments = {this.props.comments} deleteComment = {this.props.deleteComment} auth={this.props.auth} upComment = {this.props.upComment} downComment={this.props.downComment}/>
+<RenderComments comments = {this.props.comments} deleteComment = {this.props.deleteComment} auth={this.props.auth} upComment = {this.props.upComment} downComment={this.props.downComment} toggleTimer={this.props.toggleTimer}/>
 
 </div>
 
