@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Card,CardBody,CardHeader,CardText} from 'reactstrap'
 import { Loading } from './LoadingComponent';
 
 function Slides ({slides, isLoading, errMess}){
@@ -46,7 +47,19 @@ class Home extends Component {
     
     render(){
         return(
-<Slides slides ={this.props.slides.slides} isLoading={this.props.slides.isLoading} errMess={this.props.slides.errMess}/>
+            <div className='container'>
+<div className='row'>
+    <Card>
+        <CardHeader>Home:</CardHeader>
+        <CardBody>
+            <CardText>
+            <Slides slides ={this.props.slides.slides} isLoading={this.props.slides.isLoading} errMess={this.props.slides.errMess}/>
+            </CardText>
+        </CardBody>
+    </Card>
+</div>
+</div>
+
         )
         }
 }

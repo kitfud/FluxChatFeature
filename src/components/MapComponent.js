@@ -71,7 +71,7 @@ render(){
 <div className ="col-6">
 <Card>
 <CardBody>
-    <CardHeader>Map:</CardHeader>
+    <CardHeader>The Map Function:</CardHeader>
 <CardText>
 Instructions: Enter in a value and add it to the array. Click the buttons to map the values into different formats (array vs. card)
 </CardText>
@@ -106,7 +106,7 @@ text='this.state.arrayValues.map((value)=>this.state.arrayValues.indexOf(value)=
 <CardText>
 For mapping to cards we take the array of items and then map it into a card array. With the higher order map function we get a return value which 
 is demonstrated by the output of card objects with individual items mapped within:
-<CodeBlock text="    {this.state.cardValues.length>0 ? this.state.cardValues.map((value)=>
+<CodeBlock text="{this.state.cardValues.length>0 ? this.state.cardValues.map((value)=>
          
          <Card key={this.state.cardValues.indexOf(value)}>
               <CardBody>
@@ -128,37 +128,41 @@ is demonstrated by the output of card objects with individual items mapped withi
 
 </div>
 <div className ="col-6">
-      <Card>
+
+<Card>
  <div className = "container">
          
          <div className ="row">
-             <div className="col-6">
+        <div className="col-12">
           
             <div className="row">
-         
-          
-            <input id="textinput" type ="text" defaultValue={""} onChange={this.inputOnChange} />
-            <button onClick= {this.handleSubmit}>
-                Click to map item into an array:
-            </button>
-         
+                <Card>
 
+                    <CardBody>
+                    <CardHeader>
+                    1. Enter in a series of values. For example, a number like "1" or a string, "abc" the click the button: 
+                    </CardHeader>
+                    </CardBody>
+                </Card>    
+            <input id="textinput" type ="text" defaultValue={""} onChange={this.inputOnChange} />
+ 
+            <button onClick= {this.handleSubmit}>
+               2.Add in multiple values. When you are satisfied, click to map items into an array format:
+            </button>
             </div>
+
             <div className = "row">
-                   
-         
-          [         
-                     
+          [                         
 {this.state.arrayValues.map((value)=>
 this.state.arrayValues.indexOf(value)=== this.state.arrayValues.length-1 ?
 <span key={this.state.arrayValues.indexOf(value)}>{value}</span> : <span key={this.state.arrayValues.indexOf(value)}>{value},</span>
-)}
-                                
+)}            
           ]
           </div>
+
           <div className="row">
           <button onClick= {this.handleSubmitCards}>
-                Click here to map item into card:
+                3. Click to map items into a card format:
             </button>
           {this.state.cardValues.length>0 ? this.state.cardValues.map((value)=>
          
@@ -178,17 +182,23 @@ this.state.arrayValues.indexOf(value)=== this.state.arrayValues.length-1 ?
              </div>
 
 
-             <div className = "col-6">
-                 Current Value:
-             <CardItem word ={this.state.inputValue}/>
-             <button onClick= {this.resetValues}>
-                Click to reset example.
+             <div className = "row">
+
+
+<div className="col-12">
+            
+<button onClick= {this.resetValues}>
+                RESET EXAMPLE
             </button>
+</div>
+            
+ 
             
              </div>
           
            
          </div>
+
      </div>
         </Card>
 </div>

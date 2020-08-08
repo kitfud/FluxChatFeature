@@ -44,7 +44,7 @@ class Header extends Component {
                     <div className ="container">
                         <NavbarToggler onClick= {this.toggleNav}/>
                         <NavbarBrand  href="/">
-                            <em> Flux Template: Chat Feature </em>
+                            <em> Flux Playground </em>
                         </NavbarBrand>
                         <Collapse isOpen = {this.state.isNavOpen} navbar>
                             <Nav navbar>
@@ -108,7 +108,7 @@ class Header extends Component {
                     <div className = "container">
                         <div className = "row row-header">
                             <div className= "col-12 col-sm-6">
-                               Flux/Chat Feature
+                               Flux Playground
                             </div>
                         </div>
                     </div>
