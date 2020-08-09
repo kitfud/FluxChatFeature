@@ -30,7 +30,8 @@ const mapStateToProps = state =>{
     return{
         slides: state.slides,
         auth: state.auth,
-        comments: state.comments.comments
+        comments: state.comments.comments,
+        timercomments: state.comments.comments
     }
 }
 
@@ -58,6 +59,7 @@ componentDidMount(){
 <Route path='/chat' component={()=><Chat user={this.props.auth.user ? this.props.auth.user.displayName : "Login to submit a comment! "} authenticate={this.props.auth}
 postComment = {this.props.postComment}
 comments = {this.props.comments}
+timercomments = {this.props.timercomments}
 deleteComment ={this.props.deleteComment}
 upComment = {this.props.upComment}
 downComment = {this.props.downComment}

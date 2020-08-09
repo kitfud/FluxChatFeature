@@ -1,24 +1,21 @@
 import React, { Component } from 'react'
 
-export default class Timer extends Component {
+class Timer extends Component {
     constructor(props) {
         super(props);
-     
+        
      
         this.state = {
-            minutes: 1,
-            seconds: 0,
-            toggle:true
+            minutes: this.props.minutes,
+            seconds: this.props.seconds,
+         
         };
       }
     
-    
-
+ 
     componentDidMount() {
         this.myInterval = setInterval(() => {
-            this.setState({
-                toggle:false
-            })
+       
             if (this.state.seconds > 0) {
                 this.setState(({ seconds }) => ({
                     seconds: seconds - 1
@@ -43,11 +40,8 @@ export default class Timer extends Component {
   
     }
 
-    componentWillUnmount() {
-        if(this.state.toggle){
-            clearInterval(this.myInterval)
-        }
-        
+componentWillUnmount() {
+  clearInterval(this.myInterval)     
     }
 
     render() {
@@ -55,6 +49,7 @@ export default class Timer extends Component {
   
     
         const { minutes, seconds } = this.state
+
         return (
             <div>
                 { minutes === 0 && seconds === 0
@@ -65,3 +60,5 @@ export default class Timer extends Component {
         )
     }
 }
+
+export default Timer;

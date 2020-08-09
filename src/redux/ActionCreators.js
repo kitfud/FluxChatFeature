@@ -272,20 +272,19 @@ export const postComment = (comment,author) => (dispatch) => {
         .catch(error => dispatch(commentsFailed(error.message)));
       }
 
-      export const toggleTimer = (comment)=>(dispatch)=>{
-
+      export const toggleTimer = ()=>(dispatch)=>{
+        console.log("TOGGLE TIMER!")
         return firestore.collection('comments').get()
-        .then(snapshot => {
-            //console.log(comment.author.firstname);
-        
-                firestore.collection('comments').doc(comment._id).update({
-                    startTimer: false
-                })
-                
-                .then(() => {
-                    dispatch(fetchComments());
-                })       
-            
-        })
+        .then(
+            function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    doc.ref.update({
+                        startTimer: false
+                    });
+                });
+            }    
+        )
+        .then(()=>
+        dispatch(fetchComments()))
         .catch(error => dispatch(commentsFailed(error.message)));
       }

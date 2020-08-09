@@ -7,9 +7,12 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-function RenderComments({comments,deleteComment, upComment,downComment,toggleTimer}){  
+
+
+function RenderComments({comments,deleteComment, upComment,downComment}){  
   
     if(comments != null){
+       
      const rencomment = comments.map((info) => 
      <Card style = {cardStyle}  key={info._id}>
     <CardBody>
@@ -33,11 +36,10 @@ function RenderComments({comments,deleteComment, upComment,downComment,toggleTim
      <p style = {textStyle}>{info.comment}</p>
   
      <p>-- {info.author.firstname}<span> </span>
-     
+
      {new Intl.DateTimeFormat('en-US', 
      { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(info.updatedAt.toDate())))}
       
-   {info.startTimer ? <Timer toggleTimer = {toggleTimer} id={info}/>: null} 
 
       <span style={buttonStyle} className="fa fa-trash-o" onClick={() =>{if(window.confirm('are you sure you want to delete this comment?')) deleteComment(info) }}></span>
      
@@ -73,14 +75,108 @@ class Chat extends Component {
 
     constructor(props){
         super(props);  
-     
+        //necessary for page relaoad and persisting login
+  
+        
         this.state = {
-            isModalOpen: false
+            isModalOpen: false,
+            comments: this.props.comments,
+            timerActive: localStorage.getItem('timerActive') != null ? localStorage.getItem('timerActive'):false,
+            minutes:localStorage.getItem('minutes')>0 ? localStorage.getItem('minutes'):0,
+            seconds:localStorage.getItem('seconds')>0 ? localStorage.getItem('seconds'):0,
           };
+
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
+        this.handlePost = this.handlePost.bind(this);
         this.checkLogin = this.checkLogin.bind(this);
+        this.renderTimer = this.renderTimer.bind(this);
             }
+
+    
+renderTimer(comments,toggleTimer, timerActive, minutes,seconds){
+
+    if(comments !=null && timerActive ===false){
+        const rentimer = comments.map((data)=>
+        data.startTimer ? <Timer key={data._id} toggleTimer={toggleTimer} id={data} minutes={minutes} seconds={seconds}/>: null
+        
+        )
+      
+        return(
+           
+            <div>
+       {rentimer}
+            </div>
+         
+        )
+    }
+       
+        else{
+            return <div></div>;    
+        }
+    
+    }
+
+    componentDidMount(){
+       
+            this.myInterval = setInterval(() => {
+       
+                if (this.state.seconds > 0) {
+    
+                    this.setState(({ seconds }) => ({
+                        seconds: seconds - 1
+                    }))
+    
+                
+                 
+                }
+                if (this.state.seconds === 0 && this.state.timerActive) {
+    
+                    if (this.state.minutes === 0) {
+                        this.props.toggleTimer()
+                        
+                        clearInterval(this.myInterval)
+                        localStorage.clear();
+                    
+                    } 
+                  
+                    else {
+                        this.setState(({ minutes }) => ({
+                            minutes: minutes - 1,
+                            seconds: 59
+                        }))
+                        //localStorage.setItem('minutes',minutes)
+                    }
+                } 
+            }, 1000)
+        
+       
+    }
+    componentWillUnmount() {
+        clearInterval(this.myInterval)
+                  
+              
+          }
+    componentDidUpdate(){
+        localStorage.setItem('minutes',this.state.minutes)
+        localStorage.setItem('seconds',this.state.seconds)  
+      
+        if(this.state.seconds===0 && this.state.minutes===0){
+            console.log("THIS IS THE TIMER"+ this.state.timerActive)
+
+            if(this.state.timerActive===true){
+              console.log("Turning off voting")
+              this.props.toggleTimer()
+            }
+                
+                    
+            }
+
+          
+     
+           
+        }
+     
+    
 
     checkLogin(){
         if(!this.props.authenticate.isAuthenticated){
@@ -93,17 +189,31 @@ class Chat extends Component {
 
      toggleModal() {
         this.setState({
-          isModalOpen: !this.state.isModalOpen
+          isModalOpen: !this.state.isModalOpen,
+         
         });
       }
 
-      handleLogin(values) {
+      handlePost(values) {
         console.log('Current State is: ' + JSON.stringify(values));
-        this.props.postComment(values.comment, values.author);
-        this.toggleModal();
+        this.props.postComment(values.comment, values.author)
+        
+        this.setState({
+            seconds:11,
+            timerActive:true
+        })
+        localStorage.setItem('timerActive',this.state.timerActive)
+        this.toggleModal()
+        
+        
+        
+       
+       
         } 
 
 render(){
+const { minutes, seconds } = this.state
+
     return(
 <React.Fragment>
 <div className ="container">
@@ -113,7 +223,7 @@ render(){
 <ModalBody>
 
 
-<LocalForm onSubmit={(values) => this.handleLogin(values)}>
+<LocalForm onSubmit={(values) => this.handlePost(values)}>
 
 <div className="container">
 
@@ -167,6 +277,13 @@ render(){
 {this.props.user}
 
 <Button outline onClick={this.checkLogin} color="primary">Submit Comment</Button>
+<div>
+                { minutes === 0 && seconds === 0
+                    ? <h1>Voting Complete.</h1>
+                    : <h1>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
+                }
+            </div>
+
 </div>
 
 <div className = "col-6">
