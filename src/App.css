@@ -73,3 +73,7 @@ navbar-toggler-icon{
 .navbar-brand{
 color:black;
 }
+
+ol {
+  padding-inline-start: 0 !important;
+}
